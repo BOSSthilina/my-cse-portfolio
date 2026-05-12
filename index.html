@@ -31,12 +31,10 @@
             <div class="input-form">
                 <input type="text" id="symbol" placeholder="Symbol" list="symbol-list">
                 <datalist id="symbol-list"></datalist>
-
                 <input type="number" id="buyPrice" placeholder="BUY Price" step="0.01">
                 <input type="number" id="qty" placeholder="Quantity">
                 <input type="number" id="sellPrice" placeholder="Sell Price" value="0" step="0.01">
                 <button id="addBtn">Add Data</button>
-
                 <input type="text" id="searchStock" placeholder="🔍 Search Symbol...">
             </div>
 
@@ -60,6 +58,28 @@
                 <div style="color: #27ae60;">Total Income: Rs. <span id="overall-income">0.00</span></div>
             </div>
         </div>
+        <!-- DIVIDEND SECTION -->
+            <div class="dividend-section" style="margin-top: 40px; border-top: 2px solid #ccc; padding-top: 20px;">
+                <h3>Dividend Tracker (ලැබුණු ලාභාංශ)</h3>
+                <div class="input-form" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+                    <input type="text" id="divSymbol" placeholder="Symbol" list="symbol-list" style="padding: 8px;">
+                    <input type="number" id="divAmount" placeholder="Amount (Rs.)" style="padding: 8px;">
+                    <button id="addDivBtn" style="background-color: #2980b9; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Add Dividend</button>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: #2980b9; color: white;">
+                            <th>Symbol</th>
+                            <th>Amount (Rs.)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dividend-list"></tbody>
+                </table>
+                <p style="text-align: right; font-weight: bold; margin-top: 10px;">
+                    Total Dividends: Rs. <span id="total-dividends">0.00</span>
+                </p>
+            </div>
 
         <div id="average-page" style="display: none;">
             <h2>Portfolio Average Summary</h2>
