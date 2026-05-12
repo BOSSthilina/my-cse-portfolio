@@ -192,20 +192,21 @@ function showPage(pageId) {
     const averagePage = document.getElementById('average-page');
     const historyPage = document.getElementById('history-page');
 
-    // ඔක්කොම වහනවා
-    mainPage.style.display = 'none';
-    averagePage.style.display = 'none';
-    historyPage.style.display = 'none';
+    // මුලින්ම සියලුම පිටු වසනවා
+    if(mainPage) mainPage.style.display = 'none';
+    if(averagePage) averagePage.style.display = 'none';
+    if(historyPage) historyPage.style.display = 'none';
 
+    // අදාළ පිටුව විවෘත කර දත්ත පෙන්වනවා
     if (pageId === 'main') {
         mainPage.style.display = 'block';
-        renderTable();
+        renderTable(); 
     } else if (pageId === 'average') {
         averagePage.style.display = 'block';
-        renderAverageTable();
+        renderAverageTable(); // Average පිටුවට යනකොට මේක Call වෙන්නම ඕනේ
     } else if (pageId === 'history') {
         historyPage.style.display = 'block';
-        renderHistoryTable(); // History එක පෙන්නන function එක
+        renderHistoryTable(); // History පිටුවට යනකොට මේක Call වෙන්නම ඕනේ
     }
 }
 function renderAverageTable() {
