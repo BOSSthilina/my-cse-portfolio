@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTable();
     renderDividendTable(); // <--- අන්න මේ පේළිය මෙතනට එකතු කරන්න
     updateSymbolList();
+    updateChart();
     
     // Search Filter එකට අදාළ Event එක
     const searchInput = document.getElementById('searchStock');
@@ -180,6 +181,7 @@ function renderTable() {
     
     // පාට වෙනස් කරන කොටස (finalTotalIncome එකට අනුව)
     document.getElementById('overall-income').style.color = finalTotalIncome >= 0 ? '#27ae60' : '#ff0000';
+    updateChart();
 }
 
 // පේජ් එක මාරු කරන Function එක
@@ -288,6 +290,45 @@ function removeDividend(id) {
     renderDividendTable();
     renderTable();
 }
+let myChart = null;
 
+function updateChart() {
+    const ctx = document.getElementById('portfolioChart').getContext('2d');
+    
+    // දැනට තියෙන shares වල symbol සහ cost ටික ගන්නවා
+    const summary = {};
+    myPortfolio.forEach(item => {
+        if (item.sellPrice === 0) {
+            const cost = item.costWithFee || (item.totalBuy * (1.0112));
+            summary[item.symbol] = (summary[item.symbol] || 0) + cost;
+        }
+    });
+
+    const labels = Object.keys(summary);
+    const data = Object.values(summary);
+
+    if (myChart) {
+        myChart.destroy(); // පරණ chart එක අයින් කරනවා අලුත් එක දාන්න කලින්
+    }
+
+    myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: labels.map(s => getSymbolColor(s)), // අපි කලින් හදාගත්තු colors ම පාවිච්චි කරනවා
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+                title: { display: true, text: 'Portfolio Diversification' }
+            }
+        }
+    });
+}
 
     
