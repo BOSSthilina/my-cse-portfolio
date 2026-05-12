@@ -149,9 +149,19 @@ function renderTable() {
     document.getElementById('overall-income').innerText = overallIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
     document.getElementById('overall-income').style.color = overallIncome >= 0 ? '#27ae60' : '#ff0000';
 }
+// පේජ් එක මාරු කරන Function එක
 function showPage(pageId) {
-    console.log("Navigating to: " + pageId);
-    // දැනට තියෙන පේජ් එකේම කොටස් Hide/Show කරන්න මේක පාවිච්චි කළ හැකියි
+    const mainPage = document.getElementById('main-page');
+    const averagePage = document.getElementById('average-page');
+
+    if (pageId === 'main') {
+        mainPage.style.display = 'block';
+        averagePage.style.display = 'none';
+    } else if (pageId === 'average') {
+        mainPage.style.display = 'none';
+        averagePage.style.display = 'block';
+        renderAverageTable(); // Average table එක ඇතුළේ දත්ත update කරන්න
+    }
 }
 
     
