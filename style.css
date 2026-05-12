@@ -165,3 +165,12 @@ th, td {
     width: 200px; /* Search bar එක ටිකක් ලොකුවට තියෙන එක ලස්සනයි */
     border: 2px solid #ccc;
 }
+.summary-section {
+    display: flex;
+    justify-content: flex-end; 
+    gap: 30px; 
+    padding: 15px; /* පොඩි වැඩිපුර ඉඩක් දුන්නම ලස්සනයි */
+    background: #ffffff; /* Dashboard එකේ පසුබිමට ගැලපෙන්න සුදු පාට දැම්මා */
+    border-radius: 8px;
+    margin-bottom: 10px; /* Table එකට උඩින් පොඩි පරතරයක් තියන්න */
+}
