@@ -6,6 +6,20 @@
     <title>CSE Portfolio Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
+    <nav class="navbar">
+    <div class="nav-logo">CSE Portfolio</div>
+    <ul class="nav-links">
+        <li><a href="#" onclick="showPage('main')">Dashboard</a></li>
+        <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Tools ▾</a>
+            <div class="dropdown-content">
+                <a href="#" onclick="showPage('average')">Average Summary</a>
+                <a href="#" onclick="showPage('history')">History</a>
+            </div>
+        </li>
+        <li><a href="#" onclick="showPage('more')">More</a></li>
+    </ul>
+</nav>
 <body>
 
     <h2>My Portfolio Dashboard</h2>
