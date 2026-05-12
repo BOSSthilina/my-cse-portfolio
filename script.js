@@ -176,29 +176,30 @@ function renderAverageTable() {
     const avgList = document.getElementById('average-list');
     if (!avgList) return;
     
-    avgList.innerHTML = ""; // පරණ දත්ත අයින් කරනවා
+    avgList.innerHTML = ""; 
 
-    // 1. දත්ත Symbol එක අනුව Group කිරීම
     const summary = {};
 
     myPortfolio.forEach(item => {
-        const symbol = item.symbol;
-        const qty = item.qty;
-        // කොමිස් මුදල සහිත මිල ගන්නවා (පරණ දත්ත නම් ගණනය කරනවා)
-        const costWithFee = item.costWithFee || (item.totalBuy * (1 + BROKERAGE_RATE));
+        // --- මෙන්න මේ IF එක තමයි එකතු කරන්න ඕනේ ---
+        // විකුණපු නැති (sellPrice 0) කොටස් විතරක් ගණනය කිරීම සඳහා
+        if (item.sellPrice === 0) {
+            const symbol = item.symbol;
+            const qty = item.qty;
+            const costWithFee = item.costWithFee || (item.totalBuy * (1 + BROKERAGE_RATE));
 
-        if (!summary[symbol]) {
-            summary[symbol] = { totalQty: 0, totalCost: 0 };
+            if (!summary[symbol]) {
+                summary[symbol] = { totalQty: 0, totalCost: 0 };
+            }
+
+            summary[symbol].totalQty += qty;
+            summary[symbol].totalCost += costWithFee;
         }
-
-        summary[symbol].totalQty += qty;
-        summary[symbol].totalCost += costWithFee;
     });
 
-    // 2. Group කරපු දත්ත Table එකට එකතු කිරීම
     for (const symbol in summary) {
         const data = summary[symbol];
-        const avgPrice = data.totalCost / data.totalQty; // Average එක හදනවා
+        const avgPrice = data.totalCost / data.totalQty;
 
         const row = `<tr>
             <td style="font-weight: bold; background-color: ${getSymbolColor(symbol)}">${symbol}</td>
