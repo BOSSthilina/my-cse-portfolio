@@ -337,4 +337,10 @@ function updateChart() {
     });
 }
 
+function removeStock(id) {
+    if (confirm("ඔබට මෙම දත්තය මැකීමට අවශ්‍ය බව ස්ථිරද?")) {
+        myPortfolio = myPortfolio.filter(item => item.id !== id);
+        saveAndShow();
+    }
+}
     
