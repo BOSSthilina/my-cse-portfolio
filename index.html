@@ -6,7 +6,9 @@
     <title>CSE Portfolio Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body> <nav class="navbar">
+<body>
+
+    <nav class="navbar">
         <div class="nav-logo">CSE Portfolio</div>
         <ul class="nav-links">
             <li><a href="#" onclick="showPage('main')">Dashboard</a></li>
@@ -14,7 +16,7 @@
                 <a href="javascript:void(0)" class="dropbtn">Tools ▾</a>
                 <div class="dropdown-content">
                     <a href="#" onclick="showPage('average')">Average Summary</a>
-                    <a href="#" onclick="showPage('history')">History</a>
+                    <a href="#">History</a>
                 </div>
             </li>
             <li><a href="#" onclick="showPage('more')">More</a></li>
@@ -22,38 +24,61 @@
     </nav>
 
     <div class="container" style="padding: 20px;">
-        <h2>My Portfolio Dashboard</h2>
 
-        <div class="input-form">
-            <input type="text" id="symbol" placeholder="Symbol" list="symbol-list">
-            <datalist id="symbol-list"></datalist>
-        
-            <input type="number" id="buyPrice" placeholder="BUY Price" step="0.01">
-            <input type="number" id="qty" placeholder="Quantity">
-            <input type="number" id="sellPrice" placeholder="Sell Price" value="0" step="0.01">
-            <button id="addBtn">Add Data</button>
-        
-            <input type="text" id="searchStock" placeholder="🔍 Search Symbol...">
+        <div id="main-page">
+            <h2>My Portfolio Dashboard</h2>
+
+            <div class="input-form">
+                <input type="text" id="symbol" placeholder="Symbol" list="symbol-list">
+                <datalist id="symbol-list"></datalist>
+
+                <input type="number" id="buyPrice" placeholder="BUY Price" step="0.01">
+                <input type="number" id="qty" placeholder="Quantity">
+                <input type="number" id="sellPrice" placeholder="Sell Price" value="0" step="0.01">
+                <button id="addBtn">Add Data</button>
+
+                <input type="text" id="searchStock" placeholder="🔍 Search Symbol...">
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th class="h-sym">Symbol</th>
+                        <th class="h-buy">BUY</th>
+                        <th class="h-qty">Quantity</th> 
+                        <th class="h-tbuy">Total Buy</th> 
+                        <th class="h-sprice">Sell price</th>
+                        <th class="h-inc">income</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="stock-list"></tbody>
+            </table>
+
+            <div class="summary-section" style="margin-top: 20px; text-align: right; font-weight: bold; font-size: 20px;">
+                <div style="color: #00b0f0;">Total Cost: Rs. <span id="overall-cost">0.00</span></div>
+                <div style="color: #27ae60;">Total Income: Rs. <span id="overall-income">0.00</span></div>
+            </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th class="h-sym">Symbol</th> <th class="h-buy">BUY</th>
-                    <th class="h-qty">Quantity</th> 
-                    <th class="h-tbuy">Total Buy</th> 
-                    <th class="h-sprice">Sell price</th>
-                    <th class="h-inc">income</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="stock-list"></tbody>
-        </table>
-
-        <div class="summary-section" style="margin-top: 20px; text-align: right; font-weight: bold; font-size: 20px;">
-            <div style="color: #00b0f0;">Total Cost: Rs. <span id="overall-cost">0.00</span></div>
-            <div style="color: #27ae60;">Total Income: Rs. <span id="overall-income">0.00</span></div>
+        <div id="average-page" style="display: none;">
+            <h2>Portfolio Average Summary</h2>
+            <p>එකම සමාගමේ කොටස් කිහිප වතාවකදී ගත් විට එහි සාමාන්‍යය මෙහි පෙන්වයි.</p>
+            <table>
+                <thead>
+                    <tr style="background-color: #0b2e46; color: white;">
+                        <th>Symbol</th>
+                        <th>Total Quantity</th>
+                        <th>Avg. Buy Price (with Fee)</th>
+                        <th>Total Cost</th>
+                    </tr>
+                </thead>
+                <tbody id="average-list"></tbody>
+            </table>
+            <br>
+            <button onclick="showPage('main')" style="padding: 10px 20px; cursor: pointer;">Back to Dashboard</button>
         </div>
+
     </div>
 
     <script src="script.js"></script>
