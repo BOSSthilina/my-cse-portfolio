@@ -153,20 +153,24 @@ function renderTable() {
 function showPage(pageId) {
     const mainPage = document.getElementById('main-page');
     const averagePage = document.getElementById('average-page');
+    const historyPage = document.getElementById('history-page');
+
+    // ඔක්කොම වහනවා
+    mainPage.style.display = 'none';
+    averagePage.style.display = 'none';
+    historyPage.style.display = 'none';
 
     if (pageId === 'main') {
         mainPage.style.display = 'block';
-        averagePage.style.display = 'none';
-        renderTable(); // Dashboard එකට එද්දී table එක refresh කරනවා
+        renderTable();
     } else if (pageId === 'average') {
-        mainPage.style.display = 'none';
         averagePage.style.display = 'block';
-        
-        // අන්න ඒ වැදගත්ම පියවර:
-        renderAverageTable(); 
+        renderAverageTable();
+    } else if (pageId === 'history') {
+        historyPage.style.display = 'block';
+        renderHistoryTable(); // History එක පෙන්නන function එක
     }
 }
-
 function renderAverageTable() {
     const avgList = document.getElementById('average-list');
     if (!avgList) return;
@@ -204,7 +208,28 @@ function renderAverageTable() {
         avgList.innerHTML += row;
     }
 }
+function renderHistoryTable() {
+    const historyList = document.getElementById('history-list');
+    if (!historyList) return;
+    
+    historyList.innerHTML = "";
 
+    // sellPrice එක 0 ට වඩා වැඩි ඒ කියන්නේ විකුණපු shares විතරක් පෙරලා ගන්නවා
+    const soldShares = myPortfolio.filter(item => item.sellPrice > 0);
+
+    soldShares.forEach(item => {
+        const row = `<tr>
+            <td style="font-weight: bold; background-color: ${getSymbolColor(item.symbol)}">${item.symbol}</td>
+            <td>${item.qty.toLocaleString()}</td>
+            <td>${item.buy.toFixed(2)}</td>
+            <td>${item.sellPrice.toFixed(2)}</td>
+            <td style="color: ${item.income >= 0 ? 'green' : 'red'}; font-weight: bold;">
+                ${item.income.toFixed(2)}
+            </td>
+        </tr>`;
+        historyList.innerHTML += row;
+    });
+}
 
 
 
