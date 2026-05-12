@@ -27,12 +27,22 @@
 
         <div id="main-page">
             <h2>My Portfolio Dashboard</h2>
+
+            <!-- Chart එක සහ Summary එක පේළියට තියාගන්න container එකක් -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px;">
+        
+            <!-- වම් පැත්තේ Chart එක -->
+            <div class="chart-container" style="width: 100%; max-width: 300px;">
+                <canvas id="portfolioChart"></canvas>
+        </div>
             
-             <div class="summary-section" style="margin-top: 20px; text-align: right; font-weight: bold; font-size: 20px;">
+             <div class="summary-section" style="text-align: right; font-weight: bold; font-size: 20px;">
                 <div style="color: #00b0f0;">Total Cost: Rs. <span id="overall-cost">0.00</span></div>
                 <div style="color: #27ae60;">Total Income: Rs. <span id="overall-income">0.00</span></div>
             </div>
-            
+            <!-- Chart.js Library එක (Header එකේ දාන්නත් පුළුවන්, මෙතනත් අවුලක් නැහැ) -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                
             <div class="input-form">
                 <input type="text" id="symbol" placeholder="Symbol" list="symbol-list">
                 <datalist id="symbol-list"></datalist>
