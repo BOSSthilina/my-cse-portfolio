@@ -1,8 +1,10 @@
 let myPortfolio = JSON.parse(localStorage.getItem('myCSEData')) || [];
+let myDividends = JSON.parse(localStorage.getItem('myCSEDividends')) || [];
 const BROKERAGE_RATE = 0.0112; // 1.12% කොමිස් මුදල
 
 document.addEventListener('DOMContentLoaded', () => {
     renderTable();
+    renderDividendTable(); // <--- අන්න මේ පේළිය මෙතනට එකතු කරන්න
     updateSymbolList();
     
     // Search Filter එකට අදාළ Event එක
@@ -45,6 +47,22 @@ document.getElementById('addBtn').addEventListener('click', function() {
         document.getElementById('buyPrice').value = '';
         document.getElementById('qty').value = '';
         document.getElementById('sellPrice').value = '0';
+    }
+});
+
+// Dividend එකතු කරන කොටස
+document.getElementById('addDivBtn').addEventListener('click', function() {
+    const symbol = document.getElementById('divSymbol').value.toUpperCase();
+    const amount = parseFloat(document.getElementById('divAmount').value) || 0;
+
+    if (symbol !== "" && amount > 0) {
+        myDividends.push({ id: Date.now(), symbol: symbol, amount: amount });
+        localStorage.setItem('myCSEDividends', JSON.stringify(myDividends));
+        renderDividendTable();
+        renderTable(); // මුළු ලාභය update වෙන්න මේකත් ඕනේ
+        
+        document.getElementById('divSymbol').value = '';
+        document.getElementById('divAmount').value = '';
     }
 });
 
@@ -146,10 +164,24 @@ function renderTable() {
         }
     });
 
+    // ... renderTable function එක ඇතුළේ අන්තිම ටික බලන්න ...
+
+    // 1. Dividend ටිකේ එකතුව මුලින්ම ගණනය කරගන්නවා
+    const totalDivReceived = myDividends.reduce((sum, item) => sum + item.amount, 0);
+    
+    // 2. දැනට තියෙන overallIncome එකට dividend එකතුව එකතු කරනවා
+    const finalTotalIncome = overallIncome + totalDivReceived;
+
+    // 3. දැන් Dashboard එකේ display කරන පේළිය:
     document.getElementById('overall-cost').innerText = overallCost.toLocaleString(undefined, {minimumFractionDigits: 2});
-    document.getElementById('overall-income').innerText = overallIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
-    document.getElementById('overall-income').style.color = overallIncome >= 0 ? '#27ae60' : '#ff0000';
+    
+    // මේ පේළිය තමයි ඔයා වෙනස් කරන්න ඕනේ (finalTotalIncome එක පාවිච්චි කරන්න)
+    document.getElementById('overall-income').innerText = finalTotalIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
+    
+    // පාට වෙනස් කරන කොටස (finalTotalIncome එකට අනුව)
+    document.getElementById('overall-income').style.color = finalTotalIncome >= 0 ? '#27ae60' : '#ff0000';
 }
+
 // පේජ් එක මාරු කරන Function එක
 function showPage(pageId) {
     const mainPage = document.getElementById('main-page');
@@ -233,6 +265,29 @@ function renderHistoryTable() {
     });
 }
 
+function renderDividendTable() {
+    const list = document.getElementById('dividend-list');
+    if (!list) return;
+    list.innerHTML = "";
+    let totalDiv = 0;
+
+    myDividends.forEach(item => {
+        totalDiv += item.amount;
+        list.innerHTML += `<tr>
+            <td>${item.symbol}</td>
+            <td>${item.amount.toFixed(2)}</td>
+            <td><button onclick="removeDividend(${item.id})" style="background: red; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">Delete</button></td>
+        </tr>`;
+    });
+    document.getElementById('total-dividends').innerText = totalDiv.toLocaleString(undefined, {minimumFractionDigits: 2});
+}
+
+function removeDividend(id) {
+    myDividends = myDividends.filter(item => item.id !== id);
+    localStorage.setItem('myCSEDividends', JSON.stringify(myDividends));
+    renderDividendTable();
+    renderTable();
+}
 
 
     
