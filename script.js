@@ -157,12 +157,16 @@ function showPage(pageId) {
     if (pageId === 'main') {
         mainPage.style.display = 'block';
         averagePage.style.display = 'none';
+        renderTable(); // Dashboard එකට එද්දී table එක refresh කරනවා
     } else if (pageId === 'average') {
         mainPage.style.display = 'none';
         averagePage.style.display = 'block';
-        renderAverageTable(); // Average table එක ඇතුළේ දත්ත update කරන්න
+        
+        // අන්න ඒ වැදගත්ම පියවර:
+        renderAverageTable(); 
     }
 }
+
 function renderAverageTable() {
     const avgList = document.getElementById('average-list');
     if (!avgList) return;
