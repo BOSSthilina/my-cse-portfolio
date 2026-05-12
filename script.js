@@ -112,17 +112,13 @@ function renderTable() {
     myPortfolio.sort((a, b) => a.symbol.localeCompare(b.symbol));
 
     myPortfolio.forEach(item => {
-    if (item.symbol.includes(searchTerm)) {
-        
-        // --- මේ පේළිය අලුතින් ඇතුළත් කරන්න ---
-        const displayCost = item.costWithFee || (item.totalBuy * (1 + BROKERAGE_RATE)); 
+        // --- මෙන්න මේ IF එක තමයි අලුත් කොටස ---
+        // මේකෙන් කරන්නේ විකුණපු නැති (sellPrice 0) සහ search එකට ගැලපෙන ඒවා විතරක් Dashboard පෙන්වන එක
+        if (item.sellPrice === 0 && item.symbol.includes(searchTerm)) {
+            
+            const displayCost = item.costWithFee || (item.totalBuy * (1 + BROKERAGE_RATE)); 
 
-            // Total ගණනය කිරීම (Brokerage එක ඇතුළුව)
-            if (item.sellPrice === 0 || item.sellPrice === "") {
-            overallCost += displayCost; // item.costWithFee වෙනුවට displayCost දාන්න
-        } else {
-            overallIncome += item.income;
-        }
+            overallCost += displayCost;
 
             const bgColor = getSymbolColor(item.symbol);
             const row = `<tr data-id="${item.id}">
@@ -142,6 +138,11 @@ function renderTable() {
                 <td><button class="delete-btn" onclick="removeStock(${item.id})">Delete</button></td>
             </tr>`;
             list.innerHTML += row;
+        } 
+        // විකුණපු ඒවා (sellPrice > 0) Dashboard එකේ පෙන්වන්නේ නැතත්, 
+        // ඒවායේ Income එක Total Income එකට එකතු වෙන්න ඕනේ නිසා මේ කොටස දානවා:
+        else if (item.sellPrice > 0) {
+            overallIncome += item.income;
         }
     });
 
