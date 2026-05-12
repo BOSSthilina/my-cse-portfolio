@@ -149,3 +149,9 @@ function renderTable() {
     document.getElementById('overall-income').innerText = overallIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
     document.getElementById('overall-income').style.color = overallIncome >= 0 ? '#27ae60' : '#ff0000';
 }
+function showPage(pageId) {
+    console.log("Navigating to: " + pageId);
+    // දැනට තියෙන පේජ් එකේම කොටස් Hide/Show කරන්න මේක පාවිච්චි කළ හැකියි
+}
+
+    
