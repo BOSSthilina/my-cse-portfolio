@@ -1,0 +1,90 @@
+/* මූලික සැකසුම් */
+body { 
+    font-family: Arial, sans-serif; 
+    padding: 20px; 
+    background-color: #ffffff;
+}
+
+/* Data ඇතුළත් කරන Form එක */
+.input-form { 
+    margin-bottom: 20px; 
+    display: flex; 
+    gap: 5px; 
+    flex-wrap: wrap; 
+    background: #f0f0f0; 
+    padding: 15px; 
+    border-radius: 8px; 
+}
+
+input { 
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    width: 120px; 
+}
+
+/* Add Button එක */
+button#addBtn { 
+    padding: 8px 15px; 
+    background: #333; 
+    color: white; 
+    cursor: pointer; 
+    border: none; 
+    font-weight: bold; 
+}
+
+button#addBtn:hover {
+    background: #000;
+}
+
+/* Table එකේ සැකසුම් */
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    border: 2px solid black; 
+}
+
+th, td { 
+    border: 2px solid black; 
+    padding: 8px; 
+    text-align: center; 
+    font-weight: bold; 
+    font-size: 16px; 
+}
+
+/* Header Colors (ඔයා එවපු Image එකේ පිළිවෙලට) */
+.h-sym { background-color: #ff69b4; }    /* Pink */
+.h-buy { background-color: #00b050; }    /* Green */
+.h-qty { background-color: #ffcc00; }    /* Yellow (Quantity) */
+.h-tbuy { background-color: #00b0f0; }   /* Blue (Total Buy) */
+.h-sprice { background-color: #ffff00; } /* Yellow (Sell Price) */
+.h-inc { background-color: #ffffff; }    /* White (Income) */
+
+/* Column Body Colors */
+.c-buy { background-color: #00b050; }    /* Green */
+.c-qty { background-color: #ffcc66; }    /* Light Orange/Yellow */
+.c-tbuy { background-color: #00b0f0; }   /* Blue */
+
+/* Table එක ඇතුළේ ඇති Sell Price Input එක */
+.edit-input {
+    width: 80px;
+    padding: 5px;
+    border: 1px solid #000;
+    background-color: #ffff00; /* Bright Yellow */
+    text-align: center;
+    font-weight: bold;
+    outline: none;
+}
+
+/* Delete Button එක */
+.delete-btn { 
+    background: #555; 
+    color: white; 
+    border: none; 
+    padding: 4px 8px; 
+    cursor: pointer; 
+    border-radius: 3px;
+}
+
+.delete-btn:hover {
+    background: #ff0000;
+}
