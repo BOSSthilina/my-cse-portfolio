@@ -163,5 +163,45 @@ function showPage(pageId) {
         renderAverageTable(); // Average table එක ඇතුළේ දත්ත update කරන්න
     }
 }
+function renderAverageTable() {
+    const avgList = document.getElementById('average-list');
+    if (!avgList) return;
+    
+    avgList.innerHTML = ""; // පරණ දත්ත අයින් කරනවා
+
+    // 1. දත්ත Symbol එක අනුව Group කිරීම
+    const summary = {};
+
+    myPortfolio.forEach(item => {
+        const symbol = item.symbol;
+        const qty = item.qty;
+        // කොමිස් මුදල සහිත මිල ගන්නවා (පරණ දත්ත නම් ගණනය කරනවා)
+        const costWithFee = item.costWithFee || (item.totalBuy * (1 + BROKERAGE_RATE));
+
+        if (!summary[symbol]) {
+            summary[symbol] = { totalQty: 0, totalCost: 0 };
+        }
+
+        summary[symbol].totalQty += qty;
+        summary[symbol].totalCost += costWithFee;
+    });
+
+    // 2. Group කරපු දත්ත Table එකට එකතු කිරීම
+    for (const symbol in summary) {
+        const data = summary[symbol];
+        const avgPrice = data.totalCost / data.totalQty; // Average එක හදනවා
+
+        const row = `<tr>
+            <td style="font-weight: bold; background-color: ${getSymbolColor(symbol)}">${symbol}</td>
+            <td>${data.totalQty.toLocaleString()}</td>
+            <td>${avgPrice.toFixed(2)}</td>
+            <td>${data.totalCost.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+        </tr>`;
+        avgList.innerHTML += row;
+    }
+}
+
+
+
 
     
