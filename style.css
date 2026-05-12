@@ -142,24 +142,26 @@ th, td {
 }
 .input-form {
     display: flex;
-    flex-wrap: wrap; /* ඉඩ මදි වුණොත් පල්ලෙහාට වැටෙන්න */
-    gap: 10px; /* input අතර පරතරය */
+    flex-wrap: wrap; 
+    gap: 10px; 
     background-color: #f1f1f1;
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 8px;
     align-items: center;
 }
 
-#searchStock {
-    flex: 1; /* ඉතුරු වෙලා තියෙන හිස් ඉඩ ඔක්කොම මේකට ගන්නවා */
-    min-width: 150px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
+/* හැම input එකකටම පොදු style එක */
 .input-form input {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    width: 120px; /* සාමාන්‍ය size එක */
+}
+
+/* Search Bar එක විතරක් දකුණට යවන හැටි */
+#searchStock {
+    order: 10; /* මේකෙන් තමයි මේක අන්තිමට (දකුණට) යවන්නේ */
+    margin-left: auto; /* ඉතිරි ඉඩ ඔක්කොම වම් පැත්තට දීලා මේක දකුණට තල්ලු කරනවා */
+    width: 200px; /* Search bar එක ටිකක් ලොකුවට තියෙන එක ලස්සනයි */
+    border: 2px solid #ccc;
 }
