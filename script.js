@@ -142,7 +142,9 @@ function renderTable() {
             const bgColor = getSymbolColor(item.symbol);
             const row = `<tr data-id="${item.id}">
                 <td style="background-color: ${bgColor}; border-left: 5px solid hsl(${(bgColor.match(/\d+/) || [0])[0]}, 70%, 40%); font-weight: bold;">
-                    ${item.symbol}
+                    <a href="https://finance.yahoo.com/quote/${item.symbol}.LK" target="_blank" style="text-decoration: none; color: inherit;">
+                        ${item.symbol} 🔗
+                    </a>
                 </td>
                 <td>${item.buy}</td>
                 <td>${item.qty}</td>
@@ -236,7 +238,11 @@ function renderAverageTable() {
         const avgPrice = data.totalCost / data.totalQty;
 
         const row = `<tr>
-            <td style="font-weight: bold; background-color: ${getSymbolColor(symbol)}">${symbol}</td>
+            <td style="font-weight: bold; background-color: ${getSymbolColor(symbol)}">
+                <a href="https://finance.yahoo.com/quote/${symbol}.LK" target="_blank" style="text-decoration: none; color: inherit;">
+                    ${symbol} 🔗
+                </a>
+            </td>
             <td>${data.totalQty.toLocaleString()}</td>
             <td>${avgPrice.toFixed(2)}</td>
             <td>${data.totalCost.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
