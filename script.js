@@ -134,7 +134,7 @@ function renderTable() {
                 <td>${displayCost.toFixed(2)}</td>
                 <td>
                     <input type="number" class="edit-input" value="${item.sellPrice}" 
-                    oninput="updateSellPrice(${item.id}, this.value)">
+                           onchange="updateSellPrice(${item.id}, this.value)">
                 </td>
                 <td class="income-cell" style="color: ${item.income >= 0 ? 'green' : 'red'}; font-weight: bold;">
                     ${item.income.toFixed(2)}
