@@ -81,20 +81,16 @@ th, td {
 
 /* Navigation Bar එකේ මූලික පෙනුම */
 .navbar {
-    background-color: #0b2e46; /* තද නිල් පාට */
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
+    background-color: #2c3e50;
     color: white;
-    font-family: Arial, sans-serif;
+    padding: 1rem;
 }
-
 .nav-links {
     list-style: none;
     display: flex;
-    margin: 0;
-    padding: 0;
+    gap: 20px;
 }
 
 .nav-links li {
@@ -102,10 +98,9 @@ th, td {
     position: relative;
 }
 
-.nav-links li a {
+.nav-links a {
     color: white;
     text-decoration: none;
-    font-weight: bold;
 }
 
 /* Dropdown Menu එකේ පෙනුම */
@@ -174,3 +169,18 @@ th, td {
     border-radius: 8px;
     margin-bottom: 10px; /* Table එකට උඩින් පොඩි පරතරයක් තියන්න */
 }
+th:last-child { background-color: #d1d1d1; } /* Action header එකට අළු පාටක් */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
