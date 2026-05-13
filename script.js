@@ -71,19 +71,20 @@ function updateSellPrice(id, newPrice) {
     const price = parseFloat(newPrice) || 0;
     myPortfolio = myPortfolio.map(item => {
         if (item.id === id) {
-            // පරණ දත්තයක් නම් costWithFee එක හදාගන්නවා
             const currentCost = item.costWithFee || (item.totalBuy * (1 + BROKERAGE_RATE));
             const totalSell = price * item.qty;
             const sellNet = totalSell * (1 - BROKERAGE_RATE);
             const updatedIncome = sellNet - currentCost;
             
-            // costWithFee එකත් එක්කම save කරනවා
             return { ...item, sellPrice: price, income: updatedIncome, costWithFee: currentCost };
         }
         return item;
     });
     localStorage.setItem('myCSEData', JSON.stringify(myPortfolio));
+    
+    // මේ දෙකම refresh වෙන්න ඕනේ
     renderTable();
+    if (typeof renderHistoryTable === "function") renderHistoryTable(); 
 }
 
 function saveAndShow() {
@@ -127,19 +128,21 @@ function renderTable() {
     if(!list) return;
 
     list.innerHTML = "";
-    let currentStocksCost = 0;   // දැනට විකුණපු නැති ඒවයේ විතරක් පිරිවැය
-    let totalPortfolioIncome = 0; // මුළු portfolio එකේම ලාභ/පාඩු එකතුව
+    let currentStocksCost = 0;   
+    let totalPortfolioIncome = 0; 
 
-    // 1. Portfolio එක හරහා loop එකක් යනවා
     myPortfolio.forEach(item => {
-        // මේ පේළියෙන් තමයි විකුණපු සහ නොවිකුණපු සියලුම කොටස් වල දැනට තියෙන ලාභ/පාඩු එකතු කරගන්නේ
-        totalPortfolioIncome += item.income; 
-
-        // Dashboard එකේ පෙන්වන්නේ විකුණපු නැති ඒවා විතරයි (sellPrice === 0)
+        // --- මෙන්න මෙතන ඉඳන් තමයි වෙනස් වෙන්න ඕනේ ---
+        
+        // 1. ඇත්තටම විකුණපු ඒවායේ (Realized Profit) ලාභය විතරක් මුළු එකතුවට ගන්න
+        if (item.sellPrice > 0) {
+            totalPortfolioIncome += item.income; 
+        }
+        
+        // 2. Dashboard එකේ පෙන්වන්නේ විකුණපු නැති (Holding) කොටස් විතරයි
         if (item.sellPrice === 0) {
             const displayCost = item.costWithFee || (item.totalBuy * (1 + BROKERAGE_RATE)); 
             
-            // Dashboard එකේ පෙන්වන Total Cost එකට එකතු වෙන්නේ දැනට ළඟ තියෙන ඒවා විතරයි
             if (item.symbol.includes(searchTerm)) {
                 currentStocksCost += displayCost;
 
@@ -165,15 +168,14 @@ function renderTable() {
                 list.innerHTML += row;
             }
         }
+        // --- වෙනස් කිරීම මෙතනින් අවසන් ---
     });
 
-    // 2. Dividend Income එක එකතු කරගන්නවා
     const totalDivReceived = myDividends.reduce((sum, div) => sum + div.amount, 0);
     
-    // 3. මුළු ආදායම = (විකුණපු ඒවයේ ලාභය + නොවිකුණපු ඒවයේ දැනට ලාභය) + ඩිවිඩන්ඩ්
+    // මුළු ආදායම = විකුණපු කොටස් වල ලාභය + ලැබුණු Dividend
     const finalTotalIncome = totalPortfolioIncome + totalDivReceived;
 
-    // HTML එකට Display කිරීම
     const overallCostEl = document.getElementById('overall-cost');
     const overallIncomeEl = document.getElementById('overall-income');
 
@@ -183,12 +185,11 @@ function renderTable() {
     
     if (overallIncomeEl) {
         overallIncomeEl.innerText = finalTotalIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
-        // අගය අනුව පාට මාරු කිරීම (image_657c82.png එකේ වගේ)
         overallIncomeEl.style.color = finalTotalIncome >= 0 ? '#27ae60' : '#ff0000';
     }
 
     updateChart();
-}    
+}   
 // පේජ් එක මාරු කරන Function එක
 function showPage(pageId) {
     const mainPage = document.getElementById('main-page');
