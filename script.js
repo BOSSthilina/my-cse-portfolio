@@ -3,7 +3,6 @@ let myDividends = JSON.parse(localStorage.getItem('myCSEDividends')) || [];
 const BROKERAGE_RATE = 0.0112; // 1.12% කොමිස් මුදල
 
 document.addEventListener('DOMContentLoaded', () => {
-    showPage('main');
     renderTable();
     renderDividendTable(); // <--- අන්න මේ පේළිය මෙතනට එකතු කරන්න
     updateSymbolList();
@@ -170,25 +169,31 @@ function renderTable() {
         }
     });
 
-    // ... renderTable function එක ඇතුළේ අන්තිම ටික බලන්න ...
-
-    // 1. Dividend ටිකේ එකතුව මුලින්ම ගණනය කරගන්නවා
-    const totalDivReceived = myDividends.reduce((sum, item) => sum + item.amount, 0);
+    // 1. Dividend එකතුව ගණනය කිරීම
+    const totalDivReceived = myDividends.reduce((sum, div) => sum + div.amount, 0);
     
-    // 2. දැනට තියෙන overallIncome එකට dividend එකතුව එකතු කරනවා
+    // 2. විකුණපු නැති (Current) ඒවායේ income එකත් overallIncome එකට එකතු කරන්න
+    // loop එක ඇතුළේ "item.sellPrice === 0" කොටසේදී item.income එකත් overallIncome එකට එකතු වෙන්න සලස්වන්න.
+    
+    // 3. මුළු ලාභය = දැනට තියෙන ලාභ/පාඩු + විකුණපු ඒවයේ ලාභ/පාඩු + ඩිවිඩන්ඩ්
     const finalTotalIncome = overallIncome + totalDivReceived;
 
-    // 3. දැන් Dashboard එකේ display කරන පේළිය:
-    document.getElementById('overall-cost').innerText = overallCost.toLocaleString(undefined, {minimumFractionDigits: 2});
-    
-    // මේ පේළිය තමයි ඔයා වෙනස් කරන්න ඕනේ (finalTotalIncome එක පාවිච්චි කරන්න)
-    document.getElementById('overall-income').innerText = finalTotalIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
-    
-    // පාට වෙනස් කරන කොටස (finalTotalIncome එකට අනුව)
-    document.getElementById('overall-income').style.color = finalTotalIncome >= 0 ? '#27ae60' : '#ff0000';
-    updateChart();
-}
+    // Display කිරීම
+    const overallCostEl = document.getElementById('overall-cost');
+    const overallIncomeEl = document.getElementById('overall-income');
 
+    if (overallCostEl) {
+        overallCostEl.innerText = overallCost.toLocaleString(undefined, {minimumFractionDigits: 2});
+    }
+    
+    if (overallIncomeEl) {
+        overallIncomeEl.innerText = finalTotalIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
+        overallIncomeEl.style.color = finalTotalIncome >= 0 ? '#27ae60' : '#ff0000';
+    }
+
+    updateChart();
+} // <--- අන්න මේ වහන bracket එක අනිවාර්යයෙන්ම තියෙන්න ඕනේ
+    
 // පේජ් එක මාරු කරන Function එක
 function showPage(pageId) {
     const mainPage = document.getElementById('main-page');
