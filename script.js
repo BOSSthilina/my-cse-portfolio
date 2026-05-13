@@ -261,7 +261,6 @@ function renderHistoryTable() {
     
     historyList.innerHTML = "";
 
-    // sellPrice එක 0 ට වඩා වැඩි ඒ කියන්නේ විකුණපු shares විතරක් පෙරලා ගන්නවා
     const soldShares = myPortfolio.filter(item => item.sellPrice > 0);
 
     soldShares.forEach(item => {
@@ -272,6 +271,9 @@ function renderHistoryTable() {
             <td>${item.sellPrice.toFixed(2)}</td>
             <td style="color: ${item.income >= 0 ? 'green' : 'red'}; font-weight: bold;">
                 ${item.income.toFixed(2)}
+            </td>
+            <td>
+                <button onclick="removeStock(${item.id})" style="background: red; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">Delete</button>
             </td>
         </tr>`;
         historyList.innerHTML += row;
