@@ -127,72 +127,68 @@ function renderTable() {
     if(!list) return;
 
     list.innerHTML = "";
-    let overallCost = 0;
-    let overallIncome = 0;
+    let currentStocksCost = 0;   // දැනට විකුණපු නැති ඒවයේ විතරක් පිරිවැය
+    let totalPortfolioIncome = 0; // මුළු portfolio එකේම ලාභ/පාඩු එකතුව
 
-    myPortfolio.sort((a, b) => a.symbol.localeCompare(b.symbol));
-
+    // 1. Portfolio එක හරහා loop එකක් යනවා
     myPortfolio.forEach(item => {
-        // --- මෙම පේළිය මෙතනට දැමීමෙන් සියලුම shares වල ලාභ/පාඩු ගණනය වේ ---
-        overallIncome += item.income; 
+        // මේ පේළියෙන් තමයි විකුණපු සහ නොවිකුණපු සියලුම කොටස් වල දැනට තියෙන ලාභ/පාඩු එකතු කරගන්නේ
+        totalPortfolioIncome += item.income; 
 
-        if (item.sellPrice === 0 && item.symbol.includes(searchTerm)) {
+        // Dashboard එකේ පෙන්වන්නේ විකුණපු නැති ඒවා විතරයි (sellPrice === 0)
+        if (item.sellPrice === 0) {
             const displayCost = item.costWithFee || (item.totalBuy * (1 + BROKERAGE_RATE)); 
-            overallCost += displayCost;
+            
+            // Dashboard එකේ පෙන්වන Total Cost එකට එකතු වෙන්නේ දැනට ළඟ තියෙන ඒවා විතරයි
+            if (item.symbol.includes(searchTerm)) {
+                currentStocksCost += displayCost;
 
-            const bgColor = getSymbolColor(item.symbol);
-            const row = `<tr data-id="${item.id}">
-                <td style="background-color: ${bgColor}; border-left: 5px solid hsl(${(bgColor.match(/\d+/) || [0])[0]}, 70%, 40%); font-weight: bold;">
-                    <a href="https://finance.yahoo.com/quote/${item.symbol}.LK" target="_blank" style="text-decoration: none; color: inherit;">
-                        ${item.symbol} 🔗
-                    </a>
-                </td>
-                <td>${item.buy}</td>
-                <td>${item.qty}</td>
-                <td>${displayCost.toFixed(2)}</td>
-                <td>
-                    <input type="number" class="edit-input" value="${item.sellPrice}" 
-                           onchange="updateSellPrice(${item.id}, this.value)">
-                </td>
-                <td class="income-cell" style="color: ${item.income >= 0 ? 'green' : 'red'}; font-weight: bold;">
-                    ${item.income.toFixed(2)}
-                </td>
-                <td><button class="delete-btn" onclick="removeStock(${item.id})">Delete</button></td>
-            </tr>`;
-            list.innerHTML += row;
-        } 
-        // විකුණපු ඒවා (sellPrice > 0) Dashboard එකේ පෙන්වන්නේ නැතත්, 
-        // ඒවායේ Income එක Total Income එකට එකතු වෙන්න ඕනේ නිසා මේ කොටස දානවා:
-        else if (item.sellPrice > 0) {
-            overallIncome += item.income;
+                const bgColor = getSymbolColor(item.symbol);
+                const row = `<tr data-id="${item.id}">
+                    <td style="background-color: ${bgColor}; border-left: 5px solid hsl(${(bgColor.match(/\d+/) || [0])[0]}, 70%, 40%); font-weight: bold;">
+                        <a href="https://finance.yahoo.com/quote/${item.symbol}.LK" target="_blank" style="text-decoration: none; color: inherit;">
+                            ${item.symbol} 🔗
+                        </a>
+                    </td>
+                    <td>${item.buy}</td>
+                    <td>${item.qty}</td>
+                    <td>${displayCost.toFixed(2)}</td>
+                    <td>
+                        <input type="number" class="edit-input" value="${item.sellPrice}" 
+                               onchange="updateSellPrice(${item.id}, this.value)">
+                    </td>
+                    <td class="income-cell" style="color: ${item.income >= 0 ? 'green' : 'red'}; font-weight: bold;">
+                        ${item.income.toFixed(2)}
+                    </td>
+                    <td><button class="delete-btn" onclick="removeStock(${item.id})">Delete</button></td>
+                </tr>`;
+                list.innerHTML += row;
+            }
         }
     });
 
-    // 1. Dividend එකතුව ගණනය කිරීම
+    // 2. Dividend Income එක එකතු කරගන්නවා
     const totalDivReceived = myDividends.reduce((sum, div) => sum + div.amount, 0);
     
-    // 2. විකුණපු නැති (Current) ඒවායේ income එකත් overallIncome එකට එකතු කරන්න
-    // loop එක ඇතුළේ "item.sellPrice === 0" කොටසේදී item.income එකත් overallIncome එකට එකතු වෙන්න සලස්වන්න.
-    
-    // 3. මුළු ලාභය = දැනට තියෙන ලාභ/පාඩු + විකුණපු ඒවයේ ලාභ/පාඩු + ඩිවිඩන්ඩ්
-    const finalTotalIncome = overallIncome + totalDivReceived;
+    // 3. මුළු ආදායම = (විකුණපු ඒවයේ ලාභය + නොවිකුණපු ඒවයේ දැනට ලාභය) + ඩිවිඩන්ඩ්
+    const finalTotalIncome = totalPortfolioIncome + totalDivReceived;
 
-    // Display කිරීම
+    // HTML එකට Display කිරීම
     const overallCostEl = document.getElementById('overall-cost');
     const overallIncomeEl = document.getElementById('overall-income');
 
     if (overallCostEl) {
-        overallCostEl.innerText = overallCost.toLocaleString(undefined, {minimumFractionDigits: 2});
+        overallCostEl.innerText = currentStocksCost.toLocaleString(undefined, {minimumFractionDigits: 2});
     }
     
     if (overallIncomeEl) {
         overallIncomeEl.innerText = finalTotalIncome.toLocaleString(undefined, {minimumFractionDigits: 2});
+        // අගය අනුව පාට මාරු කිරීම (image_657c82.png එකේ වගේ)
         overallIncomeEl.style.color = finalTotalIncome >= 0 ? '#27ae60' : '#ff0000';
     }
 
     updateChart();
-} // <--- අන්න මේ වහන bracket එක අනිවාර්යයෙන්ම තියෙන්න ඕනේ
-    
+}    
 // පේජ් එක මාරු කරන Function එක
 function showPage(pageId) {
     const mainPage = document.getElementById('main-page');
@@ -307,7 +303,9 @@ function removeDividend(id) {
 let myChart = null;
 
 function updateChart() {
-    const ctx = document.getElementById('portfolioChart').getContext('2d');
+    const canvas = document.getElementById('portfolioChart');
+    if (!canvas) return; // Canvas එක නැත්නම් මෙතනින් නවතින්න
+    const ctx = canvas.getContext('2d');
     
     // දැනට තියෙන shares වල symbol සහ cost ටික ගන්නවා
     const summary = {};
