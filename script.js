@@ -3,6 +3,7 @@ let myDividends = JSON.parse(localStorage.getItem('myCSEDividends')) || [];
 const BROKERAGE_RATE = 0.0112; // 1.12% කොමිස් මුදල
 
 document.addEventListener('DOMContentLoaded', () => {
+    showPage('main');
     renderTable();
     renderDividendTable(); // <--- අන්න මේ පේළිය මෙතනට එකතු කරන්න
     updateSymbolList();
