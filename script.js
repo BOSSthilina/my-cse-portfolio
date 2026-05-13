@@ -133,12 +133,11 @@ function renderTable() {
     myPortfolio.sort((a, b) => a.symbol.localeCompare(b.symbol));
 
     myPortfolio.forEach(item => {
-        // --- මෙන්න මේ IF එක තමයි අලුත් කොටස ---
-        // මේකෙන් කරන්නේ විකුණපු නැති (sellPrice 0) සහ search එකට ගැලපෙන ඒවා විතරක් Dashboard පෙන්වන එක
-        if (item.sellPrice === 0 && item.symbol.includes(searchTerm)) {
-            
-            const displayCost = item.costWithFee || (item.totalBuy * (1 + BROKERAGE_RATE)); 
+        // --- මෙම පේළිය මෙතනට දැමීමෙන් සියලුම shares වල ලාභ/පාඩු ගණනය වේ ---
+        overallIncome += item.income; 
 
+        if (item.sellPrice === 0 && item.symbol.includes(searchTerm)) {
+            const displayCost = item.costWithFee || (item.totalBuy * (1 + BROKERAGE_RATE)); 
             overallCost += displayCost;
 
             const bgColor = getSymbolColor(item.symbol);
