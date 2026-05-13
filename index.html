@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSE Portfolio Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Chart.js එක මෙතන උඩින්ම දාන්න, එතකොට safe -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -25,24 +27,23 @@
 
     <div class="container" style="padding: 20px;">
 
+        <!-- MAIN PAGE START -->
         <div id="main-page">
             <h2>My Portfolio Dashboard</h2>
 
-            <!-- Chart එක සහ Summary එක පේළියට තියාගන්න container එකක් -->
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px;">
-        
-            <!-- වම් පැත්තේ Chart එක -->
-            <div class="chart-container" style="width: 100%; max-width: 300px;">
-                <canvas id="portfolioChart"></canvas>
-        </div>
-            
-             <div class="summary-section" style="text-align: right; font-weight: bold; font-size: 20px;">
-                <div style="color: #00b0f0;">Total Cost: Rs. <span id="overall-cost">0.00</span></div>
-                <div style="color: #27ae60;">Total Income: Rs. <span id="overall-income">0.00</span></div>
-            </div>
-            <!-- Chart.js Library එක (Header එකේ දාන්නත් පුළුවන්, මෙතනත් අවුලක් නැහැ) -->
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <!-- Chart Section -->
+                <div class="chart-container" style="width: 100%; max-width: 300px;">
+                    <canvas id="portfolioChart"></canvas>
+                </div>
                 
+                <!-- Summary Section -->
+                <div class="summary-section" style="text-align: right; font-weight: bold; font-size: 20px;">
+                    <div style="color: #00b0f0;">Total Cost: Rs. <span id="overall-cost">0.00</span></div>
+                    <div style="color: #27ae60;">Total Income: Rs. <span id="overall-income">0.00</span></div>
+                </div>
+            </div>
+
             <div class="input-form">
                 <input type="text" id="symbol" placeholder="Symbol" list="symbol-list">
                 <datalist id="symbol-list"></datalist>
@@ -67,9 +68,8 @@
                 </thead>
                 <tbody id="stock-list"></tbody>
             </table>
-     
-        </div>
-        <!-- DIVIDEND SECTION -->
+
+            <!-- DIVIDEND SECTION (දැන් මේක තියෙන්නේ main-page එක ඇතුළේ) -->
             <div class="dividend-section" style="margin-top: 40px; border-top: 2px solid #ccc; padding-top: 20px;">
                 <h3>Dividend Tracker (ලැබුණු ලාභාංශ)</h3>
                 <div class="input-form" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
@@ -91,16 +91,18 @@
                     Total Dividends: Rs. <span id="total-dividends">0.00</span>
                 </p>
             </div>
+        </div> 
+        <!-- MAIN PAGE END -->
 
+        <!-- AVERAGE PAGE -->
         <div id="average-page" style="display: none;">
             <h2>Portfolio Average Summary</h2>
-            <p>එකම සමාගමේ කොටස් කිහිප වතාවකදී ගත් විට එහි සාමාන්‍යය මෙහි පෙන්වයි.</p>
             <table>
                 <thead>
                     <tr style="background-color: #0b2e46; color: white;">
                         <th>Symbol</th>
                         <th>Total Quantity</th>
-                        <th>Avg. Buy Price (with Fee)</th>
+                        <th>Avg. Buy Price</th>
                         <th>Total Cost</th>
                     </tr>
                 </thead>
@@ -109,9 +111,10 @@
             <br>
             <button onclick="showPage('main')" style="padding: 10px 20px; cursor: pointer;">Back to Dashboard</button>
         </div>
+
+        <!-- HISTORY PAGE -->
         <div id="history-page" style="display: none;">
             <h2>Trade History (Sold Shares)</h2>
-            <p>මෙහි පෙන්වන්නේ ඔබ විකුණා අවසන් කරන ලද (Sell Price ඇතුළත් කළ) ගනුදෙනු පමණි.</p>
             <table>
                 <thead>
                     <tr style="background-color: #2c3e50; color: white;">
@@ -130,6 +133,7 @@
 
     </div>
 
+    <!-- Script එක අන්තිමටම තියන්න -->
     <script src="script.js"></script>
 </body>
 </html>
