@@ -96,7 +96,14 @@ function saveAndShow() {
 function removeStock(id) {
     if (confirm("ඔබට මෙම දත්තය මැකීමට අවශ්‍ය බව ස්ථිරද?")) {
         myPortfolio = myPortfolio.filter(item => item.id !== id);
-        saveAndShow();
+        // localStorage එකට save කරනවා
+        localStorage.setItem('myCSEData', JSON.stringify(myPortfolio));
+        
+        // හැම තැනම refresh කරනවා
+        renderTable();
+        renderHistoryTable();
+        updateSymbolList();
+        updateChart();
     }
 }
 
